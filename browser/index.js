@@ -8,16 +8,21 @@ import store from './store';
 import {Router, Route, hashHistory, IndexRoute} from 'react-router';
 import { getPuppiesFromServer } from './action-creators';
 import  SinglePupCont from './SinglePuppyContainer';
+import {getSelectedPuppyFromServer} from './action-creators';
 
 
-
-// function enterPuppies(){
-// 	return this.props.loadAllPuppies()
-// }
+const hardcodedPuppy = {
+  id: 1,
+  name: 'Taylor',
+  image: 'https://designerdoginfo.files.wordpress.com/2013/01/puggle-puppy-4.jpg?w=584'
+};
 
 const enterPuppies = function(nextRouterState) {
-	// console.log("nextRouterState from enterPuppies: ", nextRouterState);
 	store.dispatch(getPuppiesFromServer());
+}
+
+const enterSelectPuppy = function(nextRouterState) {
+  store.dispatch(getSelectedPuppyFromServer(nextRouterState.params.puppyId));
 }
 
 ReactDOM.render(
@@ -27,7 +32,7 @@ ReactDOM.render(
       <Router history={hashHistory}>
       	<Route path="/" onEnter={enterPuppies}>
 	      	<Route path="puppies" component={AllPuppiesContainer}/>
-          <Route path="puppies/:puppyId" component={SinglePupCont} />
+          <Route path="puppies/:puppyId" component={SinglePupCont} onEnter={enterSelectPuppy} />
 	      	<IndexRoute component={AllPuppiesContainer}/>
       	</Route>      	
   	  </Router>

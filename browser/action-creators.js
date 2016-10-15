@@ -28,3 +28,19 @@ export const getSelectedPuppy = function(selectedPuppy) {
 		selectedPuppy
 	}
 }
+
+export const getSelectedPuppyFromServer = function(puppyId) {
+	return function(dispatch) {
+		return fetch(`/api/puppies/${puppyId}`)
+		.then(function(res) {
+			return res.json()
+		})
+		.then(puppy => {
+			let gotPuppy = getSelectedPuppy(puppy);
+			dispatch(gotPuppy);
+		})
+		.catch(function(err) {
+			console.error(err);
+		})
+	}
+}

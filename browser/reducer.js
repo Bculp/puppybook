@@ -1,21 +1,30 @@
-const initialState = {
-	allPuppies: [],
-	singlePuppy: {}
-};
+import {combineReducers} from 'redux';
+import {GET_PUPPIES, GET_SELECTED_PUPPY} from './action-creators';
 
-const puppyReducer = (state = initialState, action) => {
+// const initialState = {
+// 	allPuppies: [],
+// 	singlePuppy: {}
+// };
+
+const allPuppiesReducer = (state = [], action) => {
 	switch(action.type) {
-		case "GET_PUPPIES" :
-			return Object.assign({}, state, {
-				allPuppies: action.puppies
-			});
-		case "GET_SELECTED_PUPPY" :
-			return Object.assign({}, state, {
-				singlePuppy: action.selectedPuppy
-			})
-		default: return initialState;
+		case GET_PUPPIES :
+			return action.puppies
+		default: return state;
 	}
 }
 
-export default puppyReducer;
+const selectedPuppyReducer = (state = {}, action) => {
+	switch(action.type) {
+		case GET_SELECTED_PUPPY :
+			return action.selectedPuppy
+		default: return state;
+	}
+}
 
+const rootReducer = combineReducers({
+	allPuppies: allPuppiesReducer,
+	singlePuppy: selectedPuppyReducer
+})
+
+export default rootReducer;
